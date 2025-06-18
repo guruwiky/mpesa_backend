@@ -63,14 +63,14 @@ app.post('/stkpush', async (req, res) => {
     );
     res.status(200).json(response.data);
   } catch (err) {
-    console.error('STK Push Error:', err.response ? err.response.data : err.message);
-    res.status(500).json(err.response ? err.response.data : { message: err.message });
+    console.error('STK Push Error:', err.response.data);
+    res.status(500).json(err.response.data);
   }
 });
 
-// Payment Callback Endpoint
+// M-Pesa Callback URL route (this handles the result from Daraja)
 app.post('/payment', (req, res) => {
-  console.log('✅ Callback received from M-Pesa:', JSON.stringify(req.body, null, 2));
+  console.log('✅ Payment Callback Received:', JSON.stringify(req.body, null, 2));
   res.status(200).json({ message: 'Callback received successfully' });
 });
 
@@ -79,7 +79,4 @@ app.get('/', (req, res) => {
   res.send('M-Pesa API is live 🚀');
 });
 
-app.listen(port, () => {
-  console.log(`✅ Server running on port ${port}`);
-  console.log('✅ PORT from env:', process.env.PORT);
-});
+app.listen(port, () => console.log(`Server running on port ${port}`));
