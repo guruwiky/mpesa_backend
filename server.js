@@ -7,7 +7,6 @@ app.use(express.json());
 
 const port = process.env.PORT;
 
-
 const consumerKey = process.env.CONSUMER_KEY;
 const consumerSecret = process.env.CONSUMER_SECRET;
 const shortcode = process.env.SHORTCODE;
@@ -64,9 +63,15 @@ app.post('/stkpush', async (req, res) => {
     );
     res.status(200).json(response.data);
   } catch (err) {
-    console.error(err.response.data);
-    res.status(500).json(err.response.data);
+    console.error('STK Push Error:', err.response ? err.response.data : err.message);
+    res.status(500).json(err.response ? err.response.data : { message: err.message });
   }
+});
+
+// Payment Callback Endpoint
+app.post('/payment', (req, res) => {
+  console.log('✅ Callback received from M-Pesa:', JSON.stringify(req.body, null, 2));
+  res.status(200).json({ message: 'Callback received successfully' });
 });
 
 // Health check
@@ -74,5 +79,7 @@ app.get('/', (req, res) => {
   res.send('M-Pesa API is live 🚀');
 });
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
-console.log('PORT from env:', process.env.PORT);
+app.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`);
+  console.log('✅ PORT from env:', process.env.PORT);
+});
