@@ -32,10 +32,7 @@ async function getAccessToken() {
 app.post('/stkpush', async (req, res) => {
   const { phone, amount, accountReference, transactionDesc } = req.body;
   const token = await getAccessToken();
-  const timestamp = new Date()
-    .toISOString()
-    .replace(/[^0-9]/g, '')
-    .slice(0, -3);
+  const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
 
   const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
 
@@ -68,10 +65,10 @@ app.post('/stkpush', async (req, res) => {
   }
 });
 
-// M-Pesa Callback URL route (this handles the result from Daraja)
+// Callback URL route — this was missing
 app.post('/payment', (req, res) => {
-  console.log('✅ Payment Callback Received:', JSON.stringify(req.body, null, 2));
-  res.status(200).json({ message: 'Callback received successfully' });
+  console.log('✅ Payment Callback Received:', req.body);
+  res.status(200).json({ message: 'Callback received successfully.' });
 });
 
 // Health check
@@ -80,3 +77,4 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+console.log('PORT from env:', process.env.PORT);
