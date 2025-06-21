@@ -12,7 +12,7 @@ try {
       projectId: process.env.FIREBASE_PROJECT_ID,
       privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
       // IMPORTANT: Replace '\n' characters if they were escaped when setting the environment variable
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       clientId: process.env.FIREBASE_CLIENT_ID,
       authUri: process.env.FIREBASE_AUTH_URI,
@@ -205,10 +205,11 @@ app.post('/mpesa/callback', async (req, res) => {
     let updateData = {
       callbackResultCode: ResultCode,
       callbackResultDesc: ResultDesc,
-      callbackMetadata: CallbackMetadata, // Store raw metadata for debugging
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     };
-
+      if (CallbackMetadata !== undefined) {
+  updateData.callbackMetadata = CallbackMetadata;
+      }
     if (ResultCode === 0) {
       // Payment was successful
       const amountItem = CallbackMetadata?.Item?.find(item => item.Name === 'Amount');
