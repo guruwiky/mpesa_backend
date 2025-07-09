@@ -328,6 +328,15 @@ app.get('/', (req, res) => {
 });
 
 // --- Start the Express Server ---
+app.get('/myip', (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  res.send(`Your public IP is: ${ip}`);
+});
+app.get('/myip', (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  res.send(`Your public IP is: ${ip}`);
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log('PORT from env:', process.env.PORT);
