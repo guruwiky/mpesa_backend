@@ -79,7 +79,7 @@ async function getAccessToken() {
 
   try {
     const response = await axios.get(
-      'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', // Use production URL for live environment
+      'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', // Use production URL for live environment
       {
         headers: {
           Authorization: `Basic ${auth}`,
@@ -117,7 +117,7 @@ app.post('/stkpush', async (req, res) => {
 
     // Make the STK Push request to Safaricom Daraja API
     const mpesaResponse = await axios.post(
-      'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest', // Use production URL for live environment
+      'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest', // Use production URL for live environment
       {
         BusinessShortCode: shortcode,
         Password: password,
